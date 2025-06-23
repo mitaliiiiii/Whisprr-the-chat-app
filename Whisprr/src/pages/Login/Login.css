@@ -1,0 +1,161 @@
+.Login{
+    height: 88vh;
+    width: 100vw;
+    background-color: #FAE5EE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.OR{
+  font-size: 1vw;
+}
+.border{
+    height: 83vh;
+    width: 97vw;
+    background-color: #FAE5EE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: black 2px solid;
+}
+.stars{
+    position: absolute;         /* or fixed, depending on your need */
+  top: 90px;                  /* Distance from top */
+  right: 30px;                /* Distance from right */
+  height: 10vw;               /* or use responsive units if you want scaling */
+  width: auto;
+  z-index: 10; 
+  animation: float 2s  1s infinite ;
+}
+.cloud{
+    position: absolute;         /* or fixed, depending on your need */
+               /* Distance from right */
+  height: 17vw;               /* or use responsive units if you want scaling */
+  width: auto;
+  
+   
+}
+.cloud1{
+ bottom: 90px;                  /* Distance from top */
+  left: 120px;  
+  animation: float 1.5s  1s infinite ;
+  
+}
+.cloud2{
+     bottom: 10px;                  /* Distance from top */
+  left: 250px;  
+  z-index: 10;
+  animation: float 1.5s  1s infinite ;
+  
+}
+.cloud3{
+     bottom: 80px;                  /* Distance from top */
+  right: 150px;  
+  animation: float 1.5s  1.5s infinite ;
+  
+}
+.cloud4{
+     bottom: 150px;                  /* Distance from top */
+  right: 50px;  
+  z-index: 10;
+  animation: float 1.5s  1.5s infinite ;
+   
+}
+.loginborder{
+  background-color: #F9FBF0;
+  height:32.5vw ;
+  width: 70vw;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+  ;
+  align-items: center;
+  border: black 4px solid;
+}
+.loginheader{
+  background-color: #BBA4FC;
+  height: 8vw;
+  width: 68vw;
+  border: black 5px solid;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+.logincontent{
+  background-color: #E7C4FE;
+  width: 68vw;
+  height: 22vw;
+  margin: 5px;
+  border: black 5px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.3vw;
+}
+.fontstyle{
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.logintitle{
+  margin-left: 80px;
+  font-size: 3vw;
+}
+.icons img{
+  height: 3vw;
+}
+.icons{
+  transform: translate(40vw);
+}
+.input{
+  width: 40vw;
+  height: 3vw;
+  border-radius: 20px;
+  border: black 4px solid;
+  font-size: 2vw;
+  text-align: center;
+}
+.submit{
+  font-size: 1.5vw;
+  margin: 10px;
+  height: 3vw;
+  width: 6vw;
+  border: black 4px solid;
+  border-radius: 20px;
+  background-color: #BBA4FC;
+}
+.google-btn {
+  
+  height: 2vw;
+  /* width: 20vw; */
+  border-radius: 25px;
+  /* border: 2px solid black; */
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* gap: 0.8vw; */
+  font-size: 1.3vw;
+  font-family: "Jersey 10", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.google-btn img {
+  height: 2vw;
+  width: auto;
+}
+
+.google-btn:hover {
+  background-color: #eee;
+}
+@keyframes float {
+  0% ,100%{ transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  
+}
+
+

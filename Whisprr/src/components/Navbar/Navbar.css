@@ -1,0 +1,17 @@
+.container{
+    background-color: #D0B7F8;
+    height: 12vh;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 90px;
+    border-bottom: black 3px solid;
+}
+.font{
+ 
+ font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size:6.5vh;   
+}
