@@ -47,3 +47,5 @@
 ```bash
 git clone https://github.com/yourusername/whisprr.git
 cd whisprr
+npm install
+npm run dev
