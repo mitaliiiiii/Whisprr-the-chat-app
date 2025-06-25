@@ -87,13 +87,13 @@
   background-color: #E7C4FE;
   width: 68vw;
   height: 22vw;
-  margin: 5px;
+  margin: 2px;
   border: black 5px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 2.3vw;
+  font-size: 1.5vw;
 }
 .fontstyle{
   font-family: "Jersey 10", sans-serif;
@@ -157,5 +157,13 @@
   50% { transform: translateY(-10px); }
   
 }
-
-
+.linkk{
+  cursor: pointer;
+  color: rgb(145, 15, 221);
+}
+.username{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
