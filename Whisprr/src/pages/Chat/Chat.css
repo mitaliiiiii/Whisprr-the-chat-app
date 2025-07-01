@@ -29,14 +29,14 @@ height: 83vh;
                /* Distance from right */
   height: 17vw;               /* or use responsive units if you want scaling */
   width: auto;
-  
+  animation: float 2s  1s infinite ;
    
 }
-.cloud1{
+.clouddd1{
      bottom: 90px;                  /* Distance from top */
   left: 250px
 }
-.cloud2{
+.clouddd2{
      bottom: 150px;                  /* Distance from top */
   left: 350px
 }
@@ -49,6 +49,40 @@ height: 83vh;
   z-index: 10; 
   animation: float 2s  1s infinite ;
 }
+.chatsearch{
+    height: 8%;
+    width: 90%;
+    border-radius: 20px;
+     background-color: rgb(0, 0, 0);
+    border: 2px #F9FBF0 solid;
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+}
+ 
+.chatsearch img{
+    height: 120%;
+}
+.searchin::placeholder {
+  color: #BBA4FC;
+  opacity:0.7;
+  font-weight:100;   /* Optional: ensures full color opacity */
+}
+.searchin{
+    height: 96%;
+    width: 100%;
+    font-size: 99%;
+    text-align: center;
+    font-weight: 1px;
+   border-top-left-radius: 20px;
+   border-bottom-left-radius: 20px;
+    background-color: #0e0513;
+    color: #BBA4FC;
+    
+}
 .leftside{
     height: 40vw;
     width: 25vw;
@@ -60,6 +94,7 @@ height: 83vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 .rightside{
     height: 40vw;
@@ -101,7 +136,7 @@ height: 83vh;
     font-size: 2vw;
 }
 .leftbox{
-    height:88% ;
+    height:35vw ;
     width: 88%;
     background-color:#BBA4FC;
     border: black 4px solid;
@@ -110,7 +145,11 @@ height: 83vh;
     justify-content: flex-start;
     flex-direction: column;
     align-items:center;
+    overflow: hidden;
+     
 }
+ 
+
     
     
 .upbox{
@@ -135,14 +174,39 @@ height: 83vh;
     align-items: center;
     flex-direction: column;
 }
-.chat{
-    height: 8%;
-    width: 90%;
-    border-radius: 20px;
-     background-color: #F9FBF0;
-    border: 3.5px black solid;
-    margin-top: 8px;
+.chatbox {
+  height: 29vw;            /* Remaining space below search */
+  width: 90%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  scroll-behavior: smooth;
+  margin: 15px;
 }
+
+
+.chatbox::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chatbox::-webkit-scrollbar-thumb {
+  background-color: #251c3e;
+  border-radius: 10px;
+}
+
+.chat {
+  height: 2.2rem;                  /* Slightly bigger bubble */
+  width: 16vw;
+  /* margin-top: 10px; */
+  flex-shrink: 0;
+  background-color: #F9FBF0;
+  border-radius: 20px;
+  border: 3.5px solid black;
+}
+
+
 .inputtext{
     height: 20%;
     width: 80%;
