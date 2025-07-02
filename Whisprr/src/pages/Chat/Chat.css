@@ -16,35 +16,35 @@ height: 83vh;
     border: black 2px solid;
 }
 .stars{
-    position: absolute;         /* or fixed, depending on your need */
-  top: 90px;                  /* Distance from top */
-  right: 30px;                /* Distance from right */
-  height: 10vw;               /* or use responsive units if you want scaling */
+    position: absolute;        
+  top: 90px;                  
+  right: 30px;                
   width: auto;
   z-index: 10; 
   animation: float 2s  1s infinite ;
 }
 .cloud{
-    position: absolute;         /* or fixed, depending on your need */
-               /* Distance from right */
-  height: 17vw;               /* or use responsive units if you want scaling */
+    position: absolute;       
+               
+  height: 17vw;               
   width: auto;
   animation: float 2s  1s infinite ;
+  z-index: 10;
    
 }
 .clouddd1{
-     bottom: 90px;                  /* Distance from top */
+     bottom: 90px;                  
   left: 250px
 }
 .clouddd2{
-     bottom: 150px;                  /* Distance from top */
+     bottom: 150px;                  
   left: 350px
 }
 .stars{
-    position: absolute;         /* or fixed, depending on your need */
-  top: 90px;                  /* Distance from top */
-  right: 30px;                /* Distance from right */
-  height: 10vw;               /* or use responsive units if you want scaling */
+    position: absolute;         
+  top: 90px;                  
+  right: 30px;                
+  height: 10vw;              
   width: auto;
   z-index: 10; 
   animation: float 2s  1s infinite ;
@@ -69,7 +69,7 @@ height: 83vh;
 .searchin::placeholder {
   color: #BBA4FC;
   opacity:0.7;
-  font-weight:100;   /* Optional: ensures full color opacity */
+  font-weight:100;  
 }
 .searchin{
     height: 96%;
@@ -106,7 +106,7 @@ height: 83vh;
     margin: 30px;
 }
 .upper{
-    height: 65%;
+    height: 32vw;
     width: 100%;
     border-radius: 20px;
      background-color: #F9FBF0;
@@ -115,9 +115,10 @@ height: 83vh;
      display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 0;
 }
 .bottom{
-    height: 35%;
+    height: 13vw;
     width: 100%;
     border-radius: 20px;
      background-color: #F9FBF0;
@@ -129,7 +130,7 @@ height: 83vh;
 }
 .fontstylee{
      font-family: "Jersey 10", sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   font-style: normal;
 }
 .cap{
@@ -153,15 +154,16 @@ height: 83vh;
     
     
 .upbox{
-    height:92% ;
+    height:22vw ;
     width: 96%;
     background-color:#E7C4FE;
     border: black 4px solid;
     border-radius: 20px;
-     display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-height: 0;
 }
 .bottombox{
     height:92% ;
@@ -175,7 +177,7 @@ height: 83vh;
     flex-direction: column;
 }
 .chatbox {
-  height: 29vw;            /* Remaining space below search */
+  height: 29vw;           
   width: 90%;
   overflow-y: auto;
   display: flex;
@@ -187,35 +189,64 @@ height: 83vh;
 }
 
 
-.chatbox::-webkit-scrollbar {
+.msgs::-webkit-scrollbar ,.chatbox::-webkit-scrollbar {
   width: 10px;
 }
 
-.chatbox::-webkit-scrollbar-thumb {
+.msgs::-webkit-scrollbar-thumb ,.chatbox::-webkit-scrollbar-thumb {
   background-color: #251c3e;
   border-radius: 10px;
 }
 
 .chat {
-  height: 2.2rem;                  /* Slightly bigger bubble */
+  height: 2.5rem;                 
   width: 16vw;
-  /* margin-top: 10px; */
+
   flex-shrink: 0;
   background-color: #F9FBF0;
   border-radius: 20px;
   border: 3.5px solid black;
+  cursor: pointer;
+  display: flex;
+  justify-content:center;
+  align-items: flex-start;
+  flex-direction: column;
+  font-size: 1vw;
+  padding: 6px 25px;
+  gap: 1px;
+ line-height: .8rem;
+  
+  
+  
+}
+.chat span{
+font-size: 0.7rem;
+font-weight: 0;
+color: #8c84a3;
+
+z-index: 10;
+
 }
 
 
 .inputtext{
-    height: 20%;
-    width: 80%;
+    height: 2.5rem;
+    width: 40rem;
     border: 3.5px black solid;
     border-radius: 20px;
     background-color: #F9FBF0;
     font-size: 150%;
     text-align: center;
+    flex-shrink: 0;
 }
+.chat p{
+  margin: -7;
+ z-index: 10;
+  padding: 0;
+  font-size: 1.5rem;
+  
+}
+
 .sendbtn{
     padding: 10px;
     padding-top: 5px;
@@ -238,26 +269,116 @@ text-align: center;
 
 }
 .msgs{
-    height: 80%;
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin: 10px;
+  height: cal(100%-13%);
+  min-height: 0;
+  overflow-y: scroll !important;
+  display: flex;
+  flex-direction: column;
+  
+  width: 90%;
+  
+  margin: 10px;
+  scroll-behavior: smooth;
+  position: relative;
+  
 }
-.msg{
-    height: 10%;
-    width: 20%;
-    background-color: #F9FBF0;
-    border: 3.5px black solid;
-    border-radius: 20px;
-    margin: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.msg {
+  background-color: #F9FBF0;
+  border: 3.5px black solid;
+  border-radius: 20px 20px 0 20px;
+  margin: 6px 0;
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 200px;
+  position: relative;
+  padding: 10px 12px;
+  word-wrap: break-word;
 }
-.chatmsg{
-    
+
+.msg-s {
+  align-self: flex-end;
+  border-radius: 20px 20px 0 20px;
+}
+
+.msg-r {
+  align-self: flex-start;
+  border-radius: 20px 20px 20px 0;
+}
+.msg-img{
+max-width: 195px;
+object-fit:cover;
+transform: translate(11px);
+border-radius: 20px ;
+}
+.inputbox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ime{
+  height: 2rem;
+  margin-left: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.ime:hover{
+transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 20px rgb(255, 255, 255);
+}
+.time {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 12px;
+  color: #525059;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+.time-s {
+  align-self: flex-end;
+}
+
+.time-r {
+  align-self: flex-start;
+}
+.msg-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.menu img {
+  height: 2vw;
+}
+.menu{
+  position: relative;
+}
+.lefttop{
+  height: 3vw;
+  width: 80%;
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.menu .submenu{
+  background-color:#E7C4FE;
+  padding: 0 15px;
+  border-radius: 5px;
+  position:absolute;
+  top: 100%;
+  right: 0;
+  width: 80px;
+  border: #0e0513 solid 3px;
+ cursor: pointer;
+ display: none;
+}
+.menu:hover .submenu{
+  display: block;
+}
+.online-dot {
+  height: 10px;
+  width: 10px;
+  background-color: #16D47B;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 5px rgba(22, 212, 123, 0.8);
 }
