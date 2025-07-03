@@ -102,8 +102,6 @@ import { supabase } from "../../config/supabaseclient";
 export default function Rightsideupper({ selectedUser, currentUserId }) {
   const [messages, setMessages] = useState([]);
   const msgsEndRef = useRef(null);
-  const [isTyping, setIsTyping] = useState(false);
-
 
   const scrollToBottom = () => {
     msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -160,31 +158,6 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
   }, [selectedUser, currentUserId]);
 
   useEffect(() => {
-  if (!selectedUser) return;
-
-  const channel = supabase
-    .channel("realtime-typing")
-    .on(
-      "postgres_changes",
-      {
-        event: "UPDATE",
-        schema: "public",
-        table: "presence",
-        filter: `user_id=eq.${selectedUser.id}`,
-      },
-      (payload) => {
-        setIsTyping(payload.new.typing);
-      }
-    )
-    .subscribe();
-
-  return () => {
-    supabase.removeChannel(channel);
-  };
-}, [selectedUser]);
-
-
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -203,7 +176,6 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
                 key={msg.id}
                 className={`msg ${isSender ? "msg-s" : "msg-r"}`}
               >
-                {/* If image is present, show image */}
                 {msg.image_url && (
                   <img
                     src={msg.image_url}
@@ -216,13 +188,9 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
                     }}
                   />
                 )}
-
-                {/* If text content is present, show text */}
                 {msg.content && (
                   <span className="fontstyle">{msg.content}</span>
                 )}
-
-                {/* Time */}
                 <span className={`time ${isSender ? "time-s" : "time-r"}`}>
                   {new Date(msg.created_at).toLocaleTimeString([], {
                     hour: "2-digit",
@@ -233,15 +201,10 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
             );
           })}
           <div ref={msgsEndRef} />
-          {isTyping && (
-  <div className="typing-indicator fontstyle">
-    {selectedUser?.username || "User"} is typing...
-  </div>
-)}
-
         </div>
       </div>
     </div>
   );
 }
+
 

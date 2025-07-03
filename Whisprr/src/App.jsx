@@ -63,7 +63,7 @@ const App = () => {
       return;
     }
 
-    // ✅ Always redirect to /Login after magic link login (even if session exists)
+    // ✅ Always redirect to /Login from root if session exists
     if (session && location.pathname === '/') {
       localStorage.setItem('emailAfterSignup', session.user.email);
       navigate('/Login');
@@ -72,6 +72,7 @@ const App = () => {
 
   handleRedirect();
 }, [navigate, location]);
+
 
 
 
