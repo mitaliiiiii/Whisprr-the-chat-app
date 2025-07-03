@@ -85,51 +85,34 @@ import { supabase } from "../../config/supabaseclient";
 import assets from "../../assets/assets";
 import "../../pages/Chat/Chat.css";
 import { v4 as uuidv4 } from "uuid";
-// import { debounce } from 'lodash'; 
 
-export default function Rightsidebottom({ selectedUser }) {
+export default function Rightsidebottom({ selectedUser, currentUser }) {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  
 
-
-const handleInputChange = (e) => {
-  setMessage(e.target.value);
-  updateTypingStatus(true);
-
-  clearTimeout(typingTimeout);
-  typingTimeout = setTimeout(() => {
-    updateTypingStatus(false);
-  }, 2000);
-};
-
-let typingTimeout;
+  const handleInputChange = (e) => {
+    setMessage(e.target.value);
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setImagePreview(URL.createObjectURL(file))
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
   const sendMessage = async () => {
     if (!message.trim() && !imageFile) return;
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
+    if (!currentUser) {
       alert("User not logged in");
       return;
     }
 
     let imageUrl = null;
 
-    // ✅ Upload image if exists
     if (imageFile) {
       const fileExt = imageFile.name.split(".").pop();
       const fileName = `${uuidv4()}.${fileExt}`;
@@ -150,9 +133,8 @@ let typingTimeout;
       imageUrl = data.publicUrl;
     }
 
-    // ✅ Insert message with or without image
     const { error: insertError } = await supabase.from("messages").insert({
-      sender_id: user.id,
+      sender_id: currentUser.id,
       receiver_id: selectedUser.id,
       content: message.trim() || null,
       image_url: imageUrl,
@@ -185,21 +167,20 @@ let typingTimeout;
             hidden
             onChange={handleFileChange}
           />
-        
-
           <label htmlFor="image">
             <img className="ime" src={assets.gallery_icon} alt="upload" />
           </label>
         </div>
+
         {imagePreview && (
-  <div style={{ marginTop: '10px' }}>
-    <img
-      src={imagePreview}
-      alt="Preview"
-      style={{ maxWidth: '150px', borderRadius: '8px' }}
-    />
-  </div>
-)}
+          <div style={{ marginTop: "10px" }}>
+            <img
+              src={imagePreview}
+              alt="Preview"
+              style={{ maxWidth: "150px", borderRadius: "8px" }}
+            />
+          </div>
+        )}
 
         <button className="fontstyle cap sendbtn" onClick={sendMessage}>
           Send
