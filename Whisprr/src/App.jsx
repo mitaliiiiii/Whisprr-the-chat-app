@@ -53,48 +53,26 @@ const App = () => {
 
  useEffect(() => {
   const handleRedirect = async () => {
-    console.log("🌐 App loaded. Path:", location.pathname);
-
     const {
       data: { session },
       error,
     } = await supabase.auth.getSession();
 
-    console.log("📦 Session:", session);
-    console.log("❌ Error fetching session:", error);
+    if (error) {
+      console.error('Error fetching session:', error.message);
+      return;
+    }
 
-    if (session) {
-      const storedEmail = localStorage.getItem('emailAfterSignup');
-      console.log("📧 Email in localStorage:", storedEmail);
-
-      if (storedEmail) {
-        console.log("🔁 Redirecting to /Login...");
-        navigate('/Login');
-      } else {
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        console.log("🧾 Profile:", profile);
-        console.log("❌ Profile fetch error:", profileError);
-
-        if (profile && !profileError) {
-          console.log("✅ Redirecting to /Chat");
-          navigate('/Login');
-        } else {
-          console.log("❓ Unknown user, redirecting to /");
-          navigate('/');
-        }
-      }
-    } else {
-      console.log("🚫 No session found. Staying on current page.");
+    // ✅ Always redirect to /Login after magic link login (even if session exists)
+    if (session && location.pathname === '/') {
+      localStorage.setItem('emailAfterSignup', session.user.email);
+      navigate('/Login');
     }
   };
 
   handleRedirect();
 }, [navigate, location]);
+
 
 
 
