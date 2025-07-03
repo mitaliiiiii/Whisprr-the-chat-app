@@ -92,17 +92,7 @@ export default function Rightsidebottom({ selectedUser }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   
-const updateTypingStatus = debounce(async (isTyping) => {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
 
-  await supabase
-    .from("presence")
-    .upsert({
-      user_id: user.id,
-      typing: isTyping,
-    });
-}, 400);
 
 const handleInputChange = (e) => {
   setMessage(e.target.value);
