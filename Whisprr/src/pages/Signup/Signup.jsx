@@ -23,11 +23,12 @@ const Signup = () => {
     }
 
     const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: "https://whisprr-liart.vercel.app/Login", // or your deployed URL
-      },
-    });
+  email,
+  options: {
+    emailRedirectTo: `${window.location.origin}/Login`,
+  },
+});
+
 
     if (error) {
       setMessage(error.message);
