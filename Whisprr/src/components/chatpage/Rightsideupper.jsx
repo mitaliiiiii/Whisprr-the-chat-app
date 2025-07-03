@@ -102,6 +102,8 @@ import { supabase } from "../../config/supabaseclient";
 export default function Rightsideupper({ selectedUser, currentUserId }) {
   const [messages, setMessages] = useState([]);
   const msgsEndRef = useRef(null);
+  const [isTyping, setIsTyping] = useState(false);
+
 
   const scrollToBottom = () => {
     msgsEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -158,6 +160,31 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
   }, [selectedUser, currentUserId]);
 
   useEffect(() => {
+  if (!selectedUser) return;
+
+  const channel = supabase
+    .channel("realtime-typing")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "presence",
+        filter: `user_id=eq.${selectedUser.id}`,
+      },
+      (payload) => {
+        setIsTyping(payload.new.typing);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, [selectedUser]);
+
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -206,6 +233,12 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
             );
           })}
           <div ref={msgsEndRef} />
+          {isTyping && (
+  <div className="typing-indicator fontstyle">
+    {selectedUser?.username || "User"} is typing...
+  </div>
+)}
+
         </div>
       </div>
     </div>

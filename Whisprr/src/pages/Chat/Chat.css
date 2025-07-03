@@ -382,3 +382,16 @@ transform: translateY(-8px) scale(1.03);
   display: inline-block;
   box-shadow: 0 0 5px rgba(22, 212, 123, 0.8);
 }
+.typing-indicator {
+  margin: 5px 15px;
+  color: #999;
+  font-size: 0.9rem;
+  font-style: italic;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}

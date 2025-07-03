@@ -91,7 +91,30 @@ export default function Rightsidebottom({ selectedUser }) {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  
+const updateTypingStatus = debounce(async (isTyping) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
 
+  await supabase
+    .from("presence")
+    .upsert({
+      user_id: user.id,
+      typing: isTyping,
+    });
+}, 400);
+
+const handleInputChange = (e) => {
+  setMessage(e.target.value);
+  updateTypingStatus(true);
+
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    updateTypingStatus(false);
+  }, 2000);
+};
+
+let typingTimeout;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -163,7 +186,7 @@ export default function Rightsidebottom({ selectedUser }) {
             placeholder="Write your Message"
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={handleInputChange}
           />
           <input
             type="file"
