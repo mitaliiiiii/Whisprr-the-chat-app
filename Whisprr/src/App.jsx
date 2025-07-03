@@ -82,7 +82,7 @@ const App = () => {
 
         if (profile && !profileError) {
           console.log("✅ Redirecting to /Chat");
-          navigate('/Chat');
+          navigate('/Login');
         } else {
           console.log("❓ Unknown user, redirecting to /");
           navigate('/');
