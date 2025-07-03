@@ -85,7 +85,7 @@ import { supabase } from "../../config/supabaseclient";
 import assets from "../../assets/assets";
 import "../../pages/Chat/Chat.css";
 import { v4 as uuidv4 } from "uuid";
-import { debounce } from 'lodash'; 
+// import { debounce } from 'lodash'; 
 
 export default function Rightsidebottom({ selectedUser }) {
   const [message, setMessage] = useState("");
