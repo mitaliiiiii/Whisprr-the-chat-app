@@ -51,44 +51,51 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
+ useEffect(() => {
   const handleRedirect = async () => {
+    console.log("🌐 App loaded. Path:", location.pathname);
+
     const {
       data: { session },
       error,
     } = await supabase.auth.getSession();
 
-    if (error) {
-      console.error('Error fetching session:', error.message);
-      return;
-    }
+    console.log("📦 Session:", session);
+    console.log("❌ Error fetching session:", error);
 
     if (session) {
       const storedEmail = localStorage.getItem('emailAfterSignup');
+      console.log("📧 Email in localStorage:", storedEmail);
 
       if (storedEmail) {
-        // Just signed up – go to /Login
+        console.log("🔁 Redirecting to /Login...");
         navigate('/Login');
       } else {
-        // Already existing user – check profile
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', session.user.id)
           .single();
 
+        console.log("🧾 Profile:", profile);
+        console.log("❌ Profile fetch error:", profileError);
+
         if (profile && !profileError) {
+          console.log("✅ Redirecting to /Chat");
           navigate('/Chat');
         } else {
-          // Something weird – fallback to /
+          console.log("❓ Unknown user, redirecting to /");
           navigate('/');
         }
       }
+    } else {
+      console.log("🚫 No session found. Staying on current page.");
     }
   };
 
   handleRedirect();
 }, [navigate, location]);
+
 
 
   return (
