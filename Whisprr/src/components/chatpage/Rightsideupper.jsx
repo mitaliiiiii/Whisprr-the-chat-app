@@ -95,7 +95,7 @@ export default function Rightsideupper({ selectedUser, currentUserId }) {
                   <span className="fontstyle">{msg.content}</span>
                 )}
                 <span className={`time ${isSender ? "time-s" : "time-r"}`}>
-                  {new Date(msg.created_at).toLocaleTimeString([], {
+                  {new Date(msg.created_at).toLocaleTimeString('en-IN', {
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: true,
