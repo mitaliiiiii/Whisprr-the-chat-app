@@ -158,57 +158,22 @@ export default function Leftside({ setSelectedUser }) {
   };
 
   // 🟢 Fetch all users from 'profiles'
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     const { data, error } = await supabase
-  //       .from('profiles')
-  //       .select('id, username');
-
-  //     if (error) {
-  //       console.error('Error fetching users:', error.message);
-  //       return;
-  //     }
-
-  //     setUsers(data || []);
-  //   };
-
-  //   fetchUsers();
-  // }, []);
-  useEffect(() => {
+  
+ useEffect(() => {
   const fetchUsers = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    const currentUserId = session?.user?.id;
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (!currentUserId) return;
-
-    // Get the latest message per user involving current user
-    const { data: latestMessages, error } = await supabase
-      .from("messages")
-      .select("sender_id, receiver_id, created_at")
-      .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching messages:", error.message);
+    if (!session?.user) {
+      console.log("No logged-in user found");
       return;
     }
 
-    const seen = new Set();
-    const chatUserIds = [];
+    const currentUserId = session.user.id;
 
-    // Pick the most recent message per user
-    for (const msg of latestMessages) {
-      const otherUserId =
-        msg.sender_id === currentUserId ? msg.receiver_id : msg.sender_id;
-
-      if (!seen.has(otherUserId)) {
-        seen.add(otherUserId);
-        chatUserIds.push(otherUserId);
-      }
-    }
-
-    // Fetch user profiles in the same order
-    const { data: usersData, error: userError } = await supabase
+    // Step 1: Fetch all users
+    const { data: allUsers, error: userError } = await supabase
       .from("profiles")
       .select("id, username");
 
@@ -217,16 +182,33 @@ export default function Leftside({ setSelectedUser }) {
       return;
     }
 
-    // Sort users based on message activity
-    const sortedUsers = chatUserIds
-      .map((id) => usersData.find((u) => u.id === id))
-      .filter(Boolean); // remove nulls
+    // Step 2: Fetch recent messages received by current user
+    const { data: recentMessages, error: messageError } = await supabase
+      .from("messages")
+      .select("sender_id")
+      .eq("receiver_id", currentUserId)
+      .order("created_at", { ascending: false });
+
+    if (messageError) {
+      console.error("Error fetching messages:", messageError.message);
+    }
+
+    const senderIds = [...new Set(recentMessages?.map((msg) => msg.sender_id))];
+
+    // Step 3: Prioritize those senders in user list
+    const sortedUsers = [
+      ...senderIds
+        .map((id) => allUsers.find((user) => user.id === id))
+        .filter(Boolean),
+      ...allUsers.filter((user) => !senderIds.includes(user.id)),
+    ];
 
     setUsers(sortedUsers);
   };
 
   fetchUsers();
 }, []);
+
 
 
   // ✅ Setup presence tracking for online status
