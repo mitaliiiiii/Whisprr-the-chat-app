@@ -223,72 +223,83 @@ export default function Rightsidebottom({ selectedUser, currentUser }) {
   };
 
   const sendMessage = async () => {
-    if (!message.trim() && !imageFile) return;
-    if (!currentUser) {
-      alert("User not logged in");
+  if (!message.trim() && !imageFile) return;
+
+  if (!currentUser) {
+    alert("User not logged in");
+    return;
+  }
+
+  let imageUrl = null;
+
+  // Upload image
+  if (imageFile) {
+    const fileExt = imageFile.name.split(".").pop();
+    const fileName = `${uuidv4()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("chat-images")
+      .upload(fileName, imageFile);
+
+    if (uploadError) {
+      console.error("Image upload failed:", uploadError.message);
       return;
     }
-    if (!selectedUserInfo?.email) {
-      console.warn("No email found for recipient.");
-      return;
-    }
 
-    let imageUrl = null;
+    const { data } = supabase.storage
+      .from("chat-images")
+      .getPublicUrl(fileName);
 
-    if (imageFile) {
-      const fileExt = imageFile.name.split(".").pop();
-      const fileName = `${uuidv4()}.${fileExt}`;
+    imageUrl = data.publicUrl;
+  }
 
-      const { error: uploadError } = await supabase.storage
-        .from("chat-images")
-        .upload(fileName, imageFile);
+  // Insert message
+  const { error: insertError } = await supabase.from("messages").insert({
+    sender_id: currentUser.id,
+    receiver_id: selectedUser.id,
+    content: message.trim() || null,
+    image_url: imageUrl,
+  });
 
-      if (uploadError) {
-        console.error("Image upload failed:", uploadError.message);
-        return;
-      }
+  if (insertError) {
+    console.error("Message insert failed:", insertError.message);
+    return;
+  }
 
-      const { data } = supabase.storage
-        .from("chat-images")
-        .getPublicUrl(fileName);
+  // Fetch receiver email from 'profiles'
+  const { data: userData, error: userError } = await supabase
+    .from("profiles")
+    .select("email")
+    .eq("id", selectedUser.id)
+    .single();
 
-      imageUrl = data.publicUrl;
-    }
+  if (userError || !userData?.email) {
+    console.error("No email found for recipient.", userError?.message);
+    return;
+  }
 
-    const { error: insertError } = await supabase.from("messages").insert({
-      sender_id: currentUser.id,
-      receiver_id: selectedUserInfo.id,
-      content: message.trim() || null,
-      image_url: imageUrl,
-    });
+  // Send email using Edge Function
+  fetch("https://jklgcoahekvihhhluqus.functions.supabase.co/notifyUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: userData.email,
+      senderName: currentUser.name || currentUser.username || "Someone",
+      message: message.trim() || "[Image]",
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log("Email notification response:", data))
+    .catch(console.error);
 
-    if (insertError) {
-      console.error("Message insert failed:", insertError.message);
-    } else {
-      // ✅ Trigger email notification
-      console.log("Sending email to:", selectedUserInfo.email);
+  // Clear inputs
+  setMessage("");
+  setImageFile(null);
+  setImagePreview(null);
+};
 
-      fetch("https://jklgcoahekvihhhluqus.functions.supabase.co/notifyUser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: selectedUserInfo.email,
-          senderName: currentUser.name || currentUser.username || "Someone",
-          message: message.trim() || "[Image message]",
-        }),
-      })
-        .then((res) => res.json())
-        .then((res) => console.log("Email response:", res))
-        .catch((err) => console.error("Email error:", err));
-
-      // ✅ Reset
-      setMessage("");
-      setImageFile(null);
-      setImagePreview(null);
-    }
-  };
 
   return (
     <div className="bottom">
