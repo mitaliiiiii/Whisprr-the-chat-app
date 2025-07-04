@@ -14,6 +14,9 @@ serve(async (req) => {
 
   const { email, senderName, message } = await req.json();
   const apiKey = Deno.env.get("RESEND_API_KEY");
+  console.log("Received request", { email, senderName, message });
+console.log("Using API key", apiKey?.slice(0, 6)); // avoid printing full key
+
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",

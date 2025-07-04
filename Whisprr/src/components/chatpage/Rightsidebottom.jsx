@@ -107,29 +107,35 @@ const sendMessage = async () => {
   if (insertError) {
     console.error("Message insert failed:", insertError.message);
   } else {
-    // ✅ Send email notification
-    if (selectedUser?.email) {
-      fetch("https://jklgcoahekvihhhluqus.functions.supabase.co/notifyUser", {
+    // ✅ Trigger Email Notification
+    console.log("Sending email to:", selectedUser.email);
+
+    try {
+      const response = await fetch("https://jklgcoahekvihhhluqus.functions.supabase.co/notifyUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: selectedUser.email,
-          senderName: currentUser.name || currentUser.username || "Someone",
-          message: message.trim() || "[Image message]",
+          email: selectedUser?.email,
+          senderName: currentUser?.username || currentUser?.name || "Someone",
+          message: message.trim() || "[Image]",
         }),
-      })
-        .then((res) => res.json())
-        .then(console.log)
-        .catch(console.error);
+      });
+
+      const result = await response.json();
+      console.log("Email notification response:", result);
+    } catch (err) {
+      console.error("Error sending email notification:", err);
     }
 
+    // Reset UI
     setMessage("");
     setImageFile(null);
     setImagePreview(null);
   }
 };
+
 
   return (
     <div className="bottom">
